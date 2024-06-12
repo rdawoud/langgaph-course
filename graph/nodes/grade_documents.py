@@ -22,18 +22,29 @@ def grade_documents(state: GraphState) -> Dict[str, Any]:
     question = state["question"]
     documents = state["documents"]
 
+    print("Question: " + question )
+    print("Documents: " + str(documents))
     filtered_docs = []
     web_search = False
-    for d in documents:
+    for d in documents['result']:
+
+        print("=================")
+        print(d)
         score = retrieval_grader.invoke(
-            {"question": question, "document": d.page_content}
+            {"question": question, "document": d}
         )
+        print(score)
         grade = score.binary_score
         if grade.lower() == "yes":
             print("---GRADE: DOCUMENT RELEVANT---")
             filtered_docs.append(d)
         else:
             print("---GRADE: DOCUMENT NOT RELEVANT---")
-            web_search = True
             continue
+        print("=================")
+    if len(filtered_docs) == 0 :
+        web_search = True
+        print("no relvant docs")
+    else:
+        print("filtered doc: " + str(filtered_docs))
     return {"documents": filtered_docs, "question": question, "web_search": web_search}

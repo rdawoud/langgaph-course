@@ -2,7 +2,7 @@
 from dotenv import load_dotenv
 from langgraph.graph import END, StateGraph
 from graph.consts import START,ROUTE_QUESTION, GENERATE, GRADE_DOCUMENTS, RETRIEVE, WEBSEARCH
-from graph.nodes import start, generate, grade_documents, retrieve, web_search, process_input,decide_to_generate,check_hallucinations 
+from graph.nodes import start, generate, grade_documents, retrieve,retrieven4j,  web_search, process_input,decide_to_generate,check_hallucinations 
 from graph.state import GraphState
 
 from graph.graph_utils import draw
@@ -16,7 +16,7 @@ def route_node(state: GraphState):
 workflow = StateGraph(GraphState)
 workflow.add_node(START, lambda state: start(state, workflow))
 workflow.add_node("process_input",process_input)
-workflow.add_node(RETRIEVE, retrieve)
+workflow.add_node("retrieven4j", retrieven4j)
 workflow.add_node(GRADE_DOCUMENTS, grade_documents)
 workflow.add_node("decide_to_generate", decide_to_generate)
 workflow.add_node(GENERATE, generate)
@@ -29,10 +29,10 @@ workflow.add_conditional_edges("process_input",
     route_node,
     {
         WEBSEARCH: WEBSEARCH,
-        "vectorstore": RETRIEVE,
+        "vectorstore": "retrieven4j",
     },
 )
-workflow.add_edge(RETRIEVE, GRADE_DOCUMENTS)
+workflow.add_edge("retrieven4j", GRADE_DOCUMENTS)
 workflow.add_edge(GRADE_DOCUMENTS,"decide_to_generate")
 workflow.add_conditional_edges(
     "decide_to_generate",
@@ -56,4 +56,4 @@ workflow.add_conditional_edges(
 
 app = workflow.compile()
 
-app.get_graph().draw_mermaid_png(output_file_path="graph.png")
+#app.get_graph().draw_mermaid_png(output_file_path="graph.png")
