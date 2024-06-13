@@ -12,5 +12,5 @@ def retrieven4j(state: GraphState) -> Dict[str, Any]:
 
     documents = vector(question)
     print("===Retrived Docs ===")
-    print(documents)
+    print(*documents, sep='\n')
     return {"documents": documents, "question": question}

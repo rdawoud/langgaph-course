@@ -13,11 +13,16 @@ def check_hallucinations(state: GraphState) -> Dict[str, Any]:
     question = state["question"]
     documents = state["documents"]
     generation = state["generation"]
-
+    history = state["chat_history"]
     score = hallucination_grader.invoke(
         {"documents": documents, "generation": generation}
     )
-
+    print("====question=====")
+    print(question)
+    print("====Documents=====")
+    print(*documents, sep='\n' )
+    print("====genration=====")
+    print(generation)
     if hallucination_grade := score.binary_score:
         print("---DECISION: GENERATION IS GROUNDED IN DOCUMENTS---")
         print("---GRADE GENERATION vs QUESTION---")
@@ -27,7 +32,10 @@ def check_hallucinations(state: GraphState) -> Dict[str, Any]:
             return ({"thenode": "useful","question": question, "generation": generation})
         else:
             print("---DECISION: GENERATION DOES NOT ADDRESS QUESTION---")
-            return ({"thenode": "not useful","question": question, "generation": generation})
+            history.append({"role": "user", "content": question})
+            history.append({"role": "system", "content": generation})
+            history.append({"role": "user", "content": "answer is not correct"})
+            return ({"thenode": "not useful","question": question, "generation": generation, "chat_history": history})
     else:
         print("---DECISION: GENERATION IS NOT GROUNDED IN DOCUMENTS, RE-TRY---")
         return ({"thenode": "not supported","question": question, "generation": generation})

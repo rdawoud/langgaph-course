@@ -12,4 +12,4 @@ def process_input(state: GraphState) -> Dict[str, Any]:
     source = question_router.invoke({"question": question})
 
     print("---ROUTE QUESTION TO "+source.datasource+"---")
-    return({"thenode": source.datasource,"question": question})
+    return({"thenode": source.datasource})

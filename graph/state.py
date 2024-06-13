@@ -18,5 +18,6 @@ class GraphState(TypedDict):
     generation: str
     web_search: bool
     documents: List[str]
+    chat_history: List[str]
     thenode:str
     theGraph: StateGraph

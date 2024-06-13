@@ -23,4 +23,9 @@ def web_search(state: GraphState) -> Dict[str, Any]:
         documents.append(web_results)
     else:
         documents = [web_results]
-    return {"documents": documents, "question": question}
+    print("=========")
+    print(question)
+    print("=========")
+    print(*docs, sep='\n')
+    print("=========")
+    return {"documents": docs, "question": question}

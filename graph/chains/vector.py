@@ -25,6 +25,7 @@ neo4jvector = Neo4jVector.from_existing_index(
                     (node)-[r]-(relatedNode) | 
                     {
                         name: relatedNode.name, 
+                        notes: relatedNode.notes,
                         relationship: type(r)
                     }
                 ]

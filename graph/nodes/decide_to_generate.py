@@ -11,7 +11,8 @@ def decide_to_generate(state: GraphState) -> Dict[str, Any]:
         print(
             "---DECISION: NOT ALL DOCUMENTS ARE NOT RELEVANT TO QUESTION, INCLUDE WEB SEARCH---"
         )
-        return({"thenode": WEBSEARCH})
+        return({"thenode": "generate_question"})
+
     else:
         print("---DECISION: GENERATE---")
         return({"thenode": GENERATE})
